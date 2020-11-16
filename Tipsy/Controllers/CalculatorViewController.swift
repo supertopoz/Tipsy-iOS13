@@ -16,17 +16,10 @@ class CalculatorViewController: UIViewController {
     @IBOutlet weak var twentyPctButton: UIButton!
     @IBOutlet weak var splitNumberLabel: UILabel!
     
-    var tipAmount: Double = 0.1
-    var splitNumber: Double = 2.0
-    
-    struct Button {
-        let button: UIButton
-        let value: Double
-    }
+    var tipBrain = TipBrain()
     
     @IBAction func tippedChanged(_ sender: UIButton) {
         billTextField.endEditing(true)
-        zeroPctButton.isSelected = true
         let buttons = [
             Button(button: zeroPctButton, value: 0.0),
             Button(button: tenPctButton, value: 0.1),
@@ -35,7 +28,7 @@ class CalculatorViewController: UIViewController {
         for (index, button) in buttons.enumerated(){
             if index == sender.tag {
                 button.button.isSelected = true
-                tipAmount = button.value
+                tipBrain.setTipAmount(tip: button.value)
             } else {
                 button.button.isSelected = false
             }
@@ -43,23 +36,15 @@ class CalculatorViewController: UIViewController {
     }
     
     @IBAction func stepperChanged(_ sender: UIStepper) {
-        splitNumber = sender.value
+        tipBrain.setSplitNumber(number: sender.value)
         splitNumberLabel.text = String(sender.value)
         print(sender.value)
     }
     
     @IBAction func calculatePressed(_ sender: Any) {
-        let tip = tipAmount
-        let split = splitNumber
         let cost = Double(billTextField.text ?? "0")!
-        var total = 0.0
-        if tip <= 0.0 {
-            total = cost / split
-        } else {
-            total = (cost + (cost * tip)) / split
-        }
+        let total = tipBrain.calculateBill(cost: cost)
         print(total)
-        
     }
     
 }
