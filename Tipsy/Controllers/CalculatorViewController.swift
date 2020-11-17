@@ -37,7 +37,7 @@ class CalculatorViewController: UIViewController {
     
     @IBAction func stepperChanged(_ sender: UIStepper) {
         tipBrain.setSplitNumber(number: sender.value)
-        splitNumberLabel.text = String(sender.value)
+        splitNumberLabel.text = String(format: "%.f", sender.value)
         print(sender.value)
     }
     
@@ -55,7 +55,7 @@ class CalculatorViewController: UIViewController {
         if segue.identifier == "showResult" {
             var destinationVC = segue.destination as! ResultsViewController
             destinationVC.total = tipBrain.total
-            var description = "Split between \(tipBrain.splitNumber) people, with \(tipBrain.tipAmount * 100) % tip."
+            var description = "Split between \(String(format: "%.0f", tipBrain.splitNumber))  people, with \(String(format: "%.0f", tipBrain.tipAmount * 100) ) % tip."
             destinationVC.settings = description
         }
     }
