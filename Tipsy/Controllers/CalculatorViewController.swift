@@ -42,9 +42,22 @@ class CalculatorViewController: UIViewController {
     }
     
     @IBAction func calculatePressed(_ sender: Any) {
-        let cost = Double(billTextField.text ?? "0")!
+        
+        guard let cost = Double(billTextField.text ?? "0") else { return }
         let total = tipBrain.calculateBill(cost: cost)
         print(total)
+        
+        performSegue(withIdentifier: "showResult", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "showResult" {
+            var destinationVC = segue.destination as! ResultsViewController
+            destinationVC.total = tipBrain.total
+            var description = "Split between \(tipBrain.splitNumber) people, with \(tipBrain.tipAmount * 100) % tip."
+            destinationVC.settings = description
+        }
     }
     
 }

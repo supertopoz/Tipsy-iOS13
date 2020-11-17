@@ -11,6 +11,7 @@ import Foundation
 struct TipBrain {
     var tipAmount: Double = 0.1
     var splitNumber: Double = 2.0
+    var total: Double = 0.0
     
     mutating func setTipAmount(tip: Double){
         tipAmount = tip
@@ -20,11 +21,13 @@ struct TipBrain {
         splitNumber = number
     }
     
-    func calculateBill(cost: Double) -> Double {
+    mutating func calculateBill(cost: Double) -> Double {
         if tipAmount <= 0.0 {
-            return cost / splitNumber
+            total = cost / splitNumber
+            return total
         } else {
-            return (cost + (cost * tipAmount)) / splitNumber
+            total = (cost + (cost * tipAmount)) / splitNumber
+            return total
         }
     }
     
